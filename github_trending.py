@@ -13,10 +13,10 @@ def get_trending_repositories(top_size):
     repo_json = json.loads(repo_request.content)
     top_repositories = []
     for repo in repo_json["items"]:
-        info = [repo["html_url"], repo["name"], repo["owner"]
+        repo_info = [repo["html_url"], repo["name"], repo["owner"]
                 ["login"], repo["stargazers_count"], repo["open_issues"]]
-        top_repositories.append(info)
-    top_repositories = top_repositories[0:top_size]
+        top_repositories.append(repo_info)
+    top_repositories = top_repositories[:top_size]
     return top_repositories
 
 
