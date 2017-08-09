@@ -3,27 +3,27 @@ import json
 import requests
 
 
-
 def get_trending_repositories(top_size):
     delta = datetime.timedelta(days=7)
     date = datetime.date.today() - delta
     url = 'https://api.github.com/search/repositories'
-    details = {'q': 'created:>' + str(date), 'sort': 'stars', 'order': 'desc'}
+    details = {'q': 'created:>' +
+               str(date), 'sort': 'stars', 'order': 'desc', 'per_page': top_size}
     repo_request = requests.get(url, params=details)
     repo_json = json.loads(repo_request.content)
     top_repositories = []
     for repo in repo_json["items"]:
-        repo_info = [repo["html_url"], repo["name"], repo["owner"]
-                ["login"], repo["stargazers_count"], repo["open_issues"]]
+        repo_info = (repo["html_url"], repo["name"], repo["owner"]
+                     ["login"], repo["stargazers_count"], repo["open_issues"])
         top_repositories.append(repo_info)
-    top_repositories = top_repositories[:top_size]
     return top_repositories
 
 
 def print_trending_repositories_info(repositories):
     for repo in repositories:
-        print('* ' + str(repo[3]) + ', Name:' + str(repo[1]) + ', Owner:' +
-              str(repo[2]) + ', Issues:' + str(repo[4]) + ', URL:' + repo[0] + '')
+        print('* %s, Name: %s Owner: %s Issues: %d URL: %s' %
+              (repo[3], repo[1], repo[2], repo[4], repo[0]))
+
 
 if __name__ == '__main__':
     top_repo = 20
